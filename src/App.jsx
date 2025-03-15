@@ -13,7 +13,8 @@ const App = () => {
     })
   );
   let totalChances = 3;
-  const flippedCard = cardObj.filter((card) => card.isOpen === true);
+  const flippedCard = cardObj?.filter((card) => card?.isOpen === true);
+  let cardsGroupIndex = cardObj?.filter((card) => card?.isOpen === true);
 
   const handleCardFlip = (index) => {
     if (cardObj[index].isOpen || flippedIndex.length === 2) return;
@@ -24,6 +25,15 @@ const App = () => {
       setCardObj(duplicatedCardObjArr);
     } else {
       alert("Bs kr bhai haar gaya tu");
+      setTimeout(() => {
+        setCardObj(
+          cardObj.map((card) => {
+            if (card.isOpen === true) {
+              return (card.isOpen = false);
+            }
+          })
+        );
+      }, 600);
     }
   };
 
@@ -48,6 +58,21 @@ const App = () => {
   useEffect(() => {
     alert(`hi! you have ${totalChances} chances`);
   }, []);
+
+  useEffect(() => {
+    if (cardsGroupIndex.length === cardArr.length && chances < totalChances) {
+      alert("You win pasha!!");
+      setTimeout(() => {
+        setCardObj(
+          cardObj.map((card) => {
+            if (card.isOpen === true) {
+              return (card.isOpen = false);
+            }
+          })
+        );
+      }, 600);
+    }
+  }, [flippedCard]);
 
   return (
     <div className="grid max-sm:grid-cols-1 max-md:grid-cols-2 max-lg:grid-cols-3 grid-cols-4 place-items-center gap-10 p-10 font-semibold">
